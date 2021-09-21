@@ -7,13 +7,23 @@ on:
   # Triggers the workflow on push or pull request events but only for the develop branch
   push:
     tags: ['*']
+    branches: ['*']
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      VERSION: $(git describe --tags)
     steps:
       - uses: actions/checkout@v2
-      - name: Run a one-line script
-        run: echo Hello, world! ${{ github.ref }} ${VERSION}
+      - id: get_version
+        uses: battila7/get-version-action@v2
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: Test ${{ steps.get_version.outputs.version }}
+          tag_name: ${{ steps.get_version.outputs.version }}
+          body: hello world
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
