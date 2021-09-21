@@ -1,0 +1,16 @@
+name: Test Release CD
+on:
+  push:
+    tags: "*"
+test:
+- name: release
+  uses: actions/create-release@v1
+  id: create_release
+  with:
+    draft: false
+    prerelease: false
+    release_name: Test ${{ github.ref }}
+    tag_name: ${{ github.ref }}
+    body: hello world
+  env:
+    GITHUB_TOKEN: ${{ github.token }}
