@@ -16,7 +16,6 @@ jobs:
       VERSION: $(git describe --tags)
     steps:
       - uses: actions/checkout@v2
-      - run: echo Hello, world! ${{ github.ref }} ${VERSION}
       - uses: battila7/get-version-action@v2
       - name: release
         uses: actions/create-release@v1
